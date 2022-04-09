@@ -1,0 +1,60 @@
+plugins {
+    id 'kr.entree.spigradle' version "${spigradle_version}"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+group "${plugin_base_package}.${plugin_id}"
+version "${plugin_version}"
+
+compileJava.options.encoding 'UTF-8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+repositories {
+    mavenCentral()
+    papermc()
+}
+
+dependencies {
+    compileOnly paper("${minecraft_version}")
+}
+
+spigot {
+    authors = "${plugin_authors}".split("\\s*,\\s*")
+    depends = [ ]
+    apiVersion = "${minecraft_version_short}"
+    load = STARTUP
+    name = "${plugin_name}"
+
+    commands {
+        bounty {
+            description 'Main command for Bounty Plugin'
+            usage '/bounty [<set> <player>]'
+        }
+    	/*
+        example {
+            aliases 'aliasA', 'aliasB'
+            description 'Some description'
+            permission 'some.command.permission'
+            permissionMessage 'You do not have permission.'
+            usage '/<command> [<arg1>]'
+        }
+        */
+    }
+
+    permissions {
+    	/*
+        'some.command.permission' {
+            description 'Some description'
+            defaults 'true'
+        }
+        */
+    }
+
+    debug {
+        args 'nogui'
+        jvmArgs '-Xmx8G'
+        serverPort 25565
+    }
+}
